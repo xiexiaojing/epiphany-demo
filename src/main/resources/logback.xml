@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<!-- log output to file -->
+	<appender name="ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- 按天回滚 daily -->
+			<!-- log.dir 在maven profile里配置 -->
+			<fileNamePattern>/letv/logs/mms/search-transmission-${appPort}/search-transmission-%d{yyyy-MM-dd}.log
+			</fileNamePattern>
+			<!-- 日志最大的历史 7天 -->
+			<maxHistory>2</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level [%file:%line] - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<!-- log output to console -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level [%file:%line] - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<!-- log output to file -->
+	<appender name="jdbcLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- 按天回滚 daily -->
+			<!-- log.dir 在maven profile里配置 -->
+			<fileNamePattern>/letv/logs/mms/search-transmission-${appPort}/jdbc-%d{yyyy-MM-dd}.log
+			</fileNamePattern>
+			<!-- 日志最大的历史 7天 -->
+			<maxHistory>7</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level [%file:%line] - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<!-- log output to file -->
+	<appender name="transmissionLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- 按天回滚 daily -->
+			<!-- log.dir 在maven profile里配置 -->
+			<fileNamePattern>/letv/logs/mms/search-transmission-${appPort}/transmission-%d{yyyy-MM-dd}.log
+			</fileNamePattern>
+			<!-- 日志最大的历史 7天 -->
+			<maxHistory>7</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level [%file:%line] - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<!-- This file appender is used to output aggregated performance statistics -->
+	<appender name="perf4jFileAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>/letv/logs/mms/search-transmission-${appPort}/mms-performance.log</File>
+		<encoder>
+			<!-- <Pattern>%date %-5level [%thread] %logger{36} [%file:%line] %msg%n 
+				</Pattern> -->
+			<Pattern>%date %-5level [%file:%line] %msg%n</Pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>/letv/logs/mms/search-transmission-${appPort}/mms-performance.%d{yyyy-MM-dd}.log
+			</FileNamePattern>
+			<maxHistory>2</maxHistory>
+		</rollingPolicy>
+	</appender>
+	<appender name="CoalescingStatistics"
+		class="org.perf4j.logback.AsyncCoalescingStatisticsAppender">
+		<param name="TimeSlice" value="600000" />
+		<appender-ref ref="perf4jFileAppender" />
+	</appender>
+	<!-- log SQL (pre-execution) plus exceptions caused by SQL 仅记录SQL -->
+	<logger name="org.jfaster.mango.operator.Mango" >
+		<level value="error" />
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="jdbcLog" />
+	</logger>
+
+	<!-- log SQL (pre-execution) plus exceptions caused by SQL 仅记录SQL -->
+	<logger name="jdbc.sqlonly" additivity="false">
+		<level value="error" />
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="jdbcLog" />
+	</logger>
+	<!-- log SQL with timing information, post execution 计时统计SQL的执行用时 -->
+	<logger name="jdbc.sqltiming" additivity="false">
+		<level value="error" />
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="jdbcLog" />
+	</logger>
+	<!-- only use the two logs below to trace ALL JDBC information,NOTE: This 
+		can be very voluminous! 记录所有的JDBC调用（ResultSet的除外）。Log量非常大，会影响性能， 建议关闭 一般情况下不需要开这个设定，除非追踪一个特定的JDBC问题。 -->
+	<!-- log all jdbc calls except ResultSet calls -->
+	<logger name="jdbc.audit" additivity="false" level="error">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="jdbcLog" />
+	</logger>
+	<!-- log the jdbc ResultSet calls 比audit量更大，包括ResultSet对象，记录所有的JDBC记录。建议关闭 -->
+	<logger name="jdbc.resultset" additivity="false" level="error">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="jdbcLog" />
+	</logger>
+	<!-- log connection open/close events and dump of all open connection numbers 
+		记录打开和关闭连接以及打开的连接数。用于追踪连接泄漏问题，非常有用。 -->
+	<logger name="jdbc.connection" additivity="false">
+		<level value="error" />
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="jdbcLog" />
+	</logger>
+
+	<!-- this log is for internal debugging of log4jdbc, itself -->
+	<logger name="log4jdbc.debug" additivity="false">
+		<level value="off" />
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="jdbcLog" />
+	</logger>
+	
+	<logger name="org.springframework.jms" additivity="false">
+		<level value="info" />
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="transmissionLog" />
+	</logger>
+	<logger name="com.letv.common.rabbitmq.convert" additivity="false">
+		<level value="info" />
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="transmissionLog" />
+	</logger>
+	<logger name="javax.jms" additivity="false">
+		<level value="info" />
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="transmissionLog" />
+	</logger>
+	<logger name="com.letv.mms.transmission" additivity="false">
+		<level value="info" />
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="transmissionLog" />
+	</logger>
+	<logger name="com.google.code.yanf4j" additivity="false">
+		<level value="error" />
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="transmissionLog" />
+	</logger>
+	<logger name="org.perf4j.TimingLogger" additivity="false">
+		<level value="INFO" />
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="CoalescingStatistics" />
+	</logger>
+	<root level="info">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="ROLLING" />	
+	</root>
+</configuration>

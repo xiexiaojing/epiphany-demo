@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans   
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd  
+		http://www.springframework.org/schema/context  
+		http://www.springframework.org/schema/context/spring-context-3.2.xsd 
+		http://www.springframework.org/schema/task 
+		http://www.springframework.org/schema/task/spring-task-3.2.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+	
+	<import resource="classpath:spring/read-dao-applicationContext.xml" />
+
+	<!-- 
+	<mvc:annotation-driven conversion-service="conversionService" />
+	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean" /> -->
+	<context:component-scan base-package="com.letv.mms.transmission" />
+    <bean id="configroperties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:properties/config.properties</value>
+                <value>classpath:properties/jdbc.properties</value>
+            </list>
+        </property>
+    </bean>
+	<task:executor id="executor" pool-size="5" />
+    <task:scheduler id="scheduler" pool-size="10" />  
+    <task:annotation-driven executor="executor" scheduler="scheduler" />
+
+	<!-- 配置生产者连接工厂 -->
+    <bean id="jmsConnectionFactory" class="org.apache.qpid.client.AMQConnectionFactory">
+        <constructor-arg index="0" value="${JMS_PROVIDER_CONNECTION_URL}"/>
+    </bean>
+    
+    <bean id="cacheConnFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
+    	<constructor-arg name="targetConnectionFactory" ref="jmsConnectionFactory"></constructor-arg>
+    	<property name="sessionCacheSize" value="100"></property>
+	</bean>
+    
+    <!-- 配置template,传入连接工厂 -->
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="cacheConnFactory"/>
+    </bean>
+    
+    <bean id="videoDestination" class="org.apache.qpid.client.AMQAnyDestination">
+        <constructor-arg index="0"  value="letv.mms.search.transmission.video.exchange"/>
+    </bean>
+    <bean id="albumDestination" class="org.apache.qpid.client.AMQAnyDestination">
+        <constructor-arg index="0"  value="letv.mms.search.transmission.album.exchange"/>
+    </bean>
+ <!-- 搜索数据同步专用生产者队列  
+    <bean id="videoDestination" class="org.apache.qpid.client.AMQAnyDestination">
+        <constructor-arg index="0"  value="letv.mms.search.transmission.exchage/lesocms.transmission.queue"/>
+    </bean>
+    <bean id="albumDestination" class="org.apache.qpid.client.AMQAnyDestination">
+        <constructor-arg index="0"  value="letv.mms.search.transmission.exchage/lesocms.transmission.queue"/>
+    </bean> -->
+ 
+    <bean id="redisClusterConfiguration" class="com.letv.mms.transmission.redis.RedisClusterSpring">
+        <constructor-arg><value>${redis.cluster.ip}</value></constructor-arg>
+        <property name="maxRedirects" value="3"></property>
+    </bean>
+
+    <!-- Jedis 连接池配置-->
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <!-- 连接池中最大连接数。高版本：maxTotal，低版本：maxActive -->
+        <property name="maxTotal" value="8" />
+        <!-- 连接池中最大空闲的连接数. -->
+        <property name="maxIdle" value="4" />
+        <!-- 连接池中最少空闲的连接数. -->
+        <property name="minIdle" value="1" />
+        <!-- 当连接池资源耗尽时，调用者最大阻塞的时间，超时将跑出异常。单位，毫秒数;默认为-1.表示永不超时。高版本：maxWaitMillis，低版本：maxWait -->
+        <property name="maxWaitMillis" value="5000" />
+        <!-- 连接空闲的最小时间，达到此值后空闲连接将可能会被移除。负值(-1)表示不移除. -->
+        <property name="minEvictableIdleTimeMillis" value="300000" />
+        <!-- 对于“空闲链接”检测线程而言，每次检测的链接资源的个数。默认为3 -->
+        <property name="numTestsPerEvictionRun" value="3" />
+        <!-- “空闲链接”检测线程，检测的周期，毫秒数。如果为负值，表示不运行“检测线程”。默认为-1. -->
+        <property name="timeBetweenEvictionRunsMillis" value="60000" />
+
+        <!-- testOnBorrow:向调用者输出“链接”资源时，是否检测是有有效，如果无效则从连接池中移除，并尝试获取继续获取。默认为false。建议保持默认值. -->
+        <!-- testOnReturn:向连接池“归还”链接时，是否检测“链接”对象的有效性。默认为false。建议保持默认值.-->
+        <!-- testWhileIdle:向调用者输出“链接”对象时，是否检测它的空闲超时；默认为false。如果“链接”空闲超时，将会被移除。建议保持默认值. -->
+        <!-- whenExhaustedAction:当“连接池”中active数量达到阀值时，即“链接”资源耗尽时，连接池需要采取的手段, 默认为1(0:抛出异常。1:阻塞，直到有可用链接资源。2:强制创建新的链接资源) -->
+    </bean>
+    <!-- Jedis ConnectionFactory 数据库连接配置-->
+    <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+        <property name="password" value="winner123" />
+        <constructor-arg name="poolConfig" ref="jedisPoolConfig"/>
+        <constructor-arg name="clusterConfig" ref="redisClusterConfiguration"/>
+    </bean>
+        <!-- redisTemplate配置-->
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+        <property name="connectionFactory" ref="jedisConnectionFactory"></property>
+        <property name="defaultSerializer">
+            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
+        </property>
+        <!-- 
+        <property name="valueSerializer">
+        	<bean class="com.letv.mms.transmission.redis.MmsSerializationRedisSerializer"/>
+        </property> -->
+    </bean>
+    
+    <!-- redisTemplate配置-->
+    <bean id="objectRedisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+        <property name="connectionFactory" ref="jedisConnectionFactory"></property>
+        <property name="defaultSerializer">
+            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
+        </property>
+        <property name="valueSerializer">
+        	<bean class="com.brmayi.epiphany.serializer.ObjectRedisSerializer"/>
+        </property>
+    </bean>
+    
+    <bean id="manuallyHttpServer" scope="prototype" class="com.brmayi.epiphany.business.socket.ManuallyHttpServer" />
+    <bean id="incrementBusinessTask" scope="prototype" class="com.brmayi.epiphany.business.IncrementBusinessTask" />
+    <bean id="fullStartupTask" scope="prototype" class="com.brmayi.epiphany.business.FullStartupTask" />
+    <bean id="fullBusinessTask" scope="prototype" class="com.brmayi.epiphany.business.FullBusinessTask" />
+    <bean id="niceQueueTask" scope="prototype" class="com.brmayi.epiphany.business.NiceQueueTask" />
+</beans>
