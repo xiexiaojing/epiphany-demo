@@ -9,11 +9,9 @@ import org.apache.commons.beanutils.converters.DateConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.brmayi.epiphany.business.FullStartupTask;
 import com.brmayi.epiphany.business.IncrementBusinessTask;
 import com.brmayi.epiphany.business.socket.ManuallyHttpServer;
 import com.brmayi.epiphany.common.Startup;
-import com.brmayi.epiphany.util.TimerUtil;
 import com.letv.mms.transmission.cache.subscribe.CanalSubscribe;
 import com.letv.mms.transmission.common.StarupTask;
 import com.letv.mms.transmission.service.impl.VideoDataServiceImpl;
@@ -36,7 +34,6 @@ import com.letv.mms.transmission.service.impl.VideoDataServiceImpl;
  */
 public class VideoServerBootstrap{
 	private static final String VIDEO_TIME = "transmission_video_time";
-	private static final int VIDEO_LIMIT_DEAL_ONE_TIME = 800;
 	private static final Logger logger = LoggerFactory.getLogger(VideoServerBootstrap.class);
     
 	public static void main(String[] args) {
@@ -59,15 +56,6 @@ public class VideoServerBootstrap{
 		manuallyHttpServerVideo.setDataService(videoDataServiceImpl);
 		increaseService.execute(manuallyHttpServerVideo);
 
-		if("needfull".equals(args[0])) {
-			FullStartupTask fullVideoStartupTask = (FullStartupTask)Startup.context.getBean("fullStartupTask");
-			fullVideoStartupTask.setDataService(videoDataServiceImpl);
-			fullVideoStartupTask.setFullPath("/letv/mms/search/transmission/video");
-			fullVideoStartupTask.setRedisNoKey("fullVideoNo");
-			fullVideoStartupTask.setDealOneTime(VIDEO_LIMIT_DEAL_ONE_TIME);
-			fullVideoStartupTask.setThreadTotal(15);
-			TimerUtil.runEveryday(fullVideoStartupTask, 0,0,1);
-			logger.info("full task initialization completes!");
-		}
+		logger.info("video increment and manully start!");
     }
 }
