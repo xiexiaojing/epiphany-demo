@@ -30,6 +30,8 @@ do
     fi
 	ssh root@$host "bash -ex $SCRIPT_HOME/runVideoFull.sh $server $1 $site"
     sleep 10
+    echo -e "\n\n\n\n\n\n\n\n"
+    ssh root@$host "tail -n100 /letv/logs/mms/search-transmission-4/transmission-$dateFormat.log"
     scount=$((scount+1))
 done
 echo "all done."
