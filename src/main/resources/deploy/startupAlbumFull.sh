@@ -17,4 +17,4 @@ then
     echo "kill pid: ${pid}"
 fi
 
-`/letv/apps/jdk/bin/java -DappPort=1 $JAVA_OPTS -cp $PHOME/conf:$PHOME/lib/* com.letv.mms.transmission.http.AlbumFullServerBootstrap $1 $3 > /dev/null 2>&1 &`
+`/letv/apps/jdk/bin/java -DappPort=3 $JAVA_OPTS -cp $PHOME/conf:$PHOME/lib/* com.letv.mms.transmission.http.AlbumFullServerBootstrap $1 $3 > /dev/null 2>&1 &`

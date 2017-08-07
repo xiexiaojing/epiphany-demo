@@ -41,7 +41,7 @@ public class VideoFullServerBootstrap{
 			fullVideoStartupTask.setRedisNoKey("fullVideoNo");
 			fullVideoStartupTask.setDealOneTime(VIDEO_LIMIT_DEAL_ONE_TIME);
 			fullVideoStartupTask.setThreadTotal(15);
-			TimerUtil.runEveryday(fullVideoStartupTask, 11,50,1);
+			TimerUtil.runEveryday(fullVideoStartupTask, 12,0,1);
 			logger.info("full task initialization completes!");
 	}
 }
