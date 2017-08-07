@@ -32,17 +32,21 @@ public class AlbumFullServerBootstrap{
 	private static final Logger logger = LoggerFactory.getLogger(AlbumFullServerBootstrap.class);
     
 	public static void main(String[] args) {
-		ConvertUtils.register(new DateConverter(null), java.util.Date.class);
-		StarupTask.startup();
-
-		AlbumDataServiceImpl albumDataServiceImpl = (AlbumDataServiceImpl)Startup.context.getBean("albumDataServiceImpl");
-		FullStartupTask fullAlbumStartupTask = (FullStartupTask)Startup.context.getBean("fullStartupTask");
-		fullAlbumStartupTask.setDataService(albumDataServiceImpl);
-		fullAlbumStartupTask.setFullPath("/letv/mms/search/transmission/album");
-		fullAlbumStartupTask.setRedisNoKey("fullAlbumNo");
-		fullAlbumStartupTask.setDealOneTime(ALBUM_LIMIT_DEAL_ONE_TIME);
-		fullAlbumStartupTask.setThreadTotal(23);
-		TimerUtil.runEveryday(fullAlbumStartupTask, 12,46,1);
-		logger.info("album full task initialization completes!");
+		try {
+			ConvertUtils.register(new DateConverter(null), java.util.Date.class);
+			StarupTask.startup();
+	
+			AlbumDataServiceImpl albumDataServiceImpl = (AlbumDataServiceImpl)Startup.context.getBean("albumDataServiceImpl");
+			FullStartupTask fullAlbumStartupTask = (FullStartupTask)Startup.context.getBean("fullStartupTask");
+			fullAlbumStartupTask.setDataService(albumDataServiceImpl);
+			fullAlbumStartupTask.setFullPath("/letv/mms/search/transmission/album");
+			fullAlbumStartupTask.setRedisNoKey("fullAlbumNo");
+			fullAlbumStartupTask.setDealOneTime(ALBUM_LIMIT_DEAL_ONE_TIME);
+			fullAlbumStartupTask.setThreadTotal(23);
+			TimerUtil.runEveryday(fullAlbumStartupTask, 12,55,1);
+			logger.info("album full task initialization completes!");
+		} catch(Exception e) {
+			logger.error("startup error", e);
+		}
     }
 }

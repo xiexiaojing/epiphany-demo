@@ -32,16 +32,20 @@ public class VideoFullServerBootstrap{
 	private static final Logger logger = LoggerFactory.getLogger(VideoFullServerBootstrap.class);
     
 	public static void main(String[] args) {
-		ConvertUtils.register(new DateConverter(null), java.util.Date.class);
-		StarupTask.startup();
-		VideoDataServiceImpl videoDataServiceImpl = (VideoDataServiceImpl)Startup.context.getBean("videoDataServiceImpl");
-		FullStartupTask fullVideoStartupTask = (FullStartupTask)Startup.context.getBean("fullStartupTask");
-		fullVideoStartupTask.setDataService(videoDataServiceImpl);
-		fullVideoStartupTask.setFullPath("/letv/mms/search/transmission/video");
-		fullVideoStartupTask.setRedisNoKey("fullVideoNo");
-		fullVideoStartupTask.setDealOneTime(VIDEO_LIMIT_DEAL_ONE_TIME);
-		fullVideoStartupTask.setThreadTotal(15);
-		TimerUtil.runEveryday(fullVideoStartupTask, 12,46,1);
-		logger.info("video full task initialization completes!");
+		try {
+			ConvertUtils.register(new DateConverter(null), java.util.Date.class);
+			StarupTask.startup();
+			VideoDataServiceImpl videoDataServiceImpl = (VideoDataServiceImpl)Startup.context.getBean("videoDataServiceImpl");
+			FullStartupTask fullVideoStartupTask = (FullStartupTask)Startup.context.getBean("fullStartupTask");
+			fullVideoStartupTask.setDataService(videoDataServiceImpl);
+			fullVideoStartupTask.setFullPath("/letv/mms/search/transmission/video");
+			fullVideoStartupTask.setRedisNoKey("fullVideoNo");
+			fullVideoStartupTask.setDealOneTime(VIDEO_LIMIT_DEAL_ONE_TIME);
+			fullVideoStartupTask.setThreadTotal(15);
+			TimerUtil.runEveryday(fullVideoStartupTask, 12,55,1);
+			logger.info("video full task initialization completes!");
+		} catch(Exception e) {
+			logger.error("startup error", e);
+		}
 	}
 }
