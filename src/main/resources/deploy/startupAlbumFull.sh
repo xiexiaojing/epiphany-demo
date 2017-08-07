@@ -1,6 +1,9 @@
 #!/bin/bash
 
-JAVA_OPTS="${deploy.admin.jvm-args}"
+JAVA_OPTS="-server -Xms30g -Xmx30g -Xmn17g -XX:MaxPermSize=2g -Xverify:none\
+-Xss16m -XX:+UseParallelGC -XX:MaxTenuringThreshold=6  -XX:+UseParallelOldGC -XX:+UseAdaptiveSizePolicy -XX:MaxGCPauseMillis=100 -XX:ParallelGCThreads=24\
+-XX:+UseTLAB -XX:TLABSize=1g -XX:+ResizeTLAB -XX:+PrintTLAB -verbose -XX:+PrintGCApplicationStoppedTime\
+-XX:+PrintGCApplicationStoppedTime -XX:+PrintFlagsFinal -Xloggc:/letv/logs/mms/gcablumfull.log"
 
 PHOME="${deploy.base}/${project.name}"
 
