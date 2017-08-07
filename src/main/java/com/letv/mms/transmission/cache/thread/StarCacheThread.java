@@ -157,29 +157,31 @@ public class StarCacheThread implements Runnable {
         isRunning=false;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Scheduled(fixedDelay=1000)
 	public void fleshData() {
-		if(isRunning) {
+		if(isRunning|| cnStars==null || enStars==null || hkStars==null) {
 			return;
 		}
-		ValueOperations<String, String> ops = redisTemplate.opsForValue();
-		String starTime = ops.get("starTime");
+		ValueOperations<String, String> strOps = redisTemplate.opsForValue();
+//		ValueOperations<String, Object> byteOps = (ValueOperations<String, Object>) objectRedisTemplate.opsForValue();
+		String starTime = strOps.get("starTime");
 		List<StarInfo> stars = starInfoDao.getByUpdateTime(starTime);
 		if(!stars.isEmpty()) {
 			for(StarInfo star : stars) {
 				String starId = String.valueOf(star.getId());
 	        	String starName = star.getName();
 	        	cnStars.put(starId, starName);
-	        	ops.set("cnStar"+starId, starName, 1, TimeUnit.DAYS);
+//	        	strOps.set("cnStar"+starId, starName, 1, TimeUnit.DAYS);
 	        	starName = StringUtils.isEmpty(star.getNameEn())?star.getName():star.getNameEn();
 	        	enStars.put(starId, starName);
-	        	ops.set("enStar"+starId, starName, 1, TimeUnit.DAYS);
+//	        	strOps.set("enStar"+starId, starName, 1, TimeUnit.DAYS);
 	        	starName = StringUtils.isEmpty(star.getNameHk())?star.getName():star.getNameHk();
 	        	hkStars.put(starId, starName);
-	        	ops.set("hkStar"+starId, starName, 1, TimeUnit.DAYS);
+//	        	strOps.set("hkStar"+starId, starName, 1, TimeUnit.DAYS);
 	        	redisTemplate.convertAndSend("star", starId);
 			}
-			ops.set("starTime", dateDao.getNow()); 
+			strOps.set("starTime", dateDao.getNow()); 
 			LOGGER.info("thread cnStars UPDATE SIZE:{}", stars.size());
 		}
 	}
