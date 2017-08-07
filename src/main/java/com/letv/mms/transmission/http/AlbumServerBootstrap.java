@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import com.brmayi.epiphany.business.IncrementBusinessTask;
 import com.brmayi.epiphany.business.socket.ManuallyHttpServer;
 import com.brmayi.epiphany.common.Startup;
-import com.letv.mms.transmission.cache.subscribe.CanalSubscribe;
 import com.letv.mms.transmission.common.StarupTask;
 import com.letv.mms.transmission.service.impl.AlbumDataServiceImpl;
 /**
@@ -40,8 +39,6 @@ public class AlbumServerBootstrap{
 		ConvertUtils.register(new DateConverter(null), java.util.Date.class);
 		StarupTask.startup();
 		ScheduledExecutorService increaseService = Executors.newScheduledThreadPool(6);
-		CanalSubscribe canalSubscribe = (CanalSubscribe)Startup.context.getBean("canalSubscribe");
-		increaseService.scheduleWithFixedDelay(canalSubscribe, 0, 2, TimeUnit.MINUTES);
 		
 		AlbumDataServiceImpl albumDataServiceImpl = (AlbumDataServiceImpl)Startup.context.getBean("albumDataServiceImpl");
 

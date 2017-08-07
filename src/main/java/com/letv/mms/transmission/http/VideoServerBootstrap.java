@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import com.brmayi.epiphany.business.IncrementBusinessTask;
 import com.brmayi.epiphany.business.socket.ManuallyHttpServer;
 import com.brmayi.epiphany.common.Startup;
-import com.letv.mms.transmission.cache.subscribe.CanalSubscribe;
 import com.letv.mms.transmission.common.StarupTask;
 import com.letv.mms.transmission.service.impl.VideoDataServiceImpl;
 /**
@@ -41,9 +40,6 @@ public class VideoServerBootstrap{
 		StarupTask.startup();
 		
 		ScheduledExecutorService increaseService = Executors.newScheduledThreadPool(6);
-		CanalSubscribe canalSubscribe = (CanalSubscribe)Startup.context.getBean("canalSubscribe");
-		increaseService.scheduleWithFixedDelay(canalSubscribe, 0, 2, TimeUnit.MINUTES);
-		
     	VideoDataServiceImpl videoDataServiceImpl = (VideoDataServiceImpl)Startup.context.getBean("videoDataServiceImpl");
 
     	IncrementBusinessTask incrementVideoSearchTask = (IncrementBusinessTask)Startup.context.getBean("incrementBusinessTask");
