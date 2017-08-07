@@ -42,7 +42,7 @@ public class AlbumFullServerBootstrap{
 		fullAlbumStartupTask.setRedisNoKey("fullAlbumNo");
 		fullAlbumStartupTask.setDealOneTime(ALBUM_LIMIT_DEAL_ONE_TIME);
 		fullAlbumStartupTask.setThreadTotal(23);
-		TimerUtil.runEveryday(fullAlbumStartupTask, 0,0,1);
+		TimerUtil.runEveryday(fullAlbumStartupTask, 11,34,1);
 		logger.info("full task initialization completes!");
     }
 }
