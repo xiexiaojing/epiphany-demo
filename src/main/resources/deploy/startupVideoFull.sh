@@ -1,10 +1,10 @@
 #!/bin/bash
 
-JAVA_OPTS="-server -Xms30g -Xmx30g -Xmn17g -XX:MaxPermSize=2g -Xverify:none \
+JAVA_OPTS="-server -Xms30g -Xmx30g -Xmn17g -Xverify:none \
 -Xss16m -XX:+UseParallelGC -XX:MaxTenuringThreshold=6  -XX:+UseParallelOldGC -XX:+UseAdaptiveSizePolicy -XX:MaxGCPauseMillis=100 -XX:ParallelGCThreads=24 \
 -XX:+UseTLAB -XX:TLABSize=1g -XX:+ResizeTLAB -XX:+PrintTLAB -verbose -XX:+PrintGCApplicationStoppedTime \
 -XX:+PrintGCApplicationStoppedTime -XX:+PrintFlagsFinal -Xloggc:/letv/logs/mms/gcvideofull.log \
--XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath:/letv/logs/mms/increment-dump.log"
+-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/letv/logs/mms/increment-dump.log"
 
 PHOME="${deploy.base}/${project.name}"
 
