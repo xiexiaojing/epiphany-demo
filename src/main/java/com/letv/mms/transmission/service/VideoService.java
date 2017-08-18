@@ -259,6 +259,7 @@ public class VideoService {
 	        videoJson.put("lang", lang);//多语言信息
 	        putUtilsService.putCmsNocopyrightContentToJson(videoJson, video.getPid());//是否为CMS非版权运营视频
 	        putUtilsService.putAddonToJson(videoJson, String.valueOf(video.getId()), 3);//对应的Boss系统的addonid
+	        putUtilsService.putPayendToJson(videoJson, String.valueOf(video.getId()), 3);//专辑对应的Boss系统的付费终端
 	        dictionaryService.putSingleToJson(videoJson, "contentRating", video.getContentRating(), lang);//内容分级
 	        videoJson.put("extData", video.getExtData());
 	        videoJson.put("categoryExt", video.getCategoryExt());

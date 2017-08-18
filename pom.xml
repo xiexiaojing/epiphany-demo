@@ -195,21 +195,16 @@
 			</activation>
 			<properties>
 				<mms.db.driverClassName>net.sf.log4jdbc.DriverSpy</mms.db.driverClassName>
-                <mms.db.url>jdbc:log4jdbc:mysql://10.127.98.47:3306/mms?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true</mms.db.url>
-                <mms.db.username>mms_read</mms.db.username>
-                <mms.db.password>phgPnMo4DOmS8t0Kor3q</mms.db.password>
+                <mms.db.url>jdbc:log4jdbc:mysql://10.127.96.75:3329/mms?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true</mms.db.url>
+                <mms.db.username>mms_test</mms.db.username>
+                <mms.db.password>pVoiGjwrnQtCcybHhspw</mms.db.password>
                 <!-- mms-search-transmission file path -->
 				<mms.search.transmission.path>/letv/mms/search/transmission/</mms.search.transmission.path>
 				<mms.search.transmission.jms.url>
 				<![CDATA[
 					amqp://swiftq_mms:dl319sfl3@mms/?brokerlist='tcp://10.183.96.210:8018'&amp;sync_publish='all'&amp;sync_ack=true
 				]]>
-				</mms.search.transmission.jms.url>
-				<mms.search.temp.jms.url>
-				<![CDATA[
-					amqp://:@/?brokerlist='tcp://10.11.144.92:5672'&sync_publish=all&sync_ack=true
-				]]>
-				</mms.search.temp.jms.url>  
+				</mms.search.transmission.jms.url> 
 				<!-- dubbo的zookeeper链接 -->
                 <mms.dubbo.zookeeper.url>36.110.219.106:2181,111.206.209.166:2181,111.206.209.167:2181,115.182.93.103:2181,115.182.93.108:2181</mms.dubbo.zookeeper.url>
 				<mms.cbase.address>127.0.0.1</mms.cbase.address>
