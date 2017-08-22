@@ -358,7 +358,7 @@ public class AlbumService {
 	        albumJson.put("lang", lang);//多语言信息
 	        putUtilsService.putCmsNocopyrightToJson(albumJson, album.getId());//cms版权信息
 	        putUtilsService.putAddonToJson(albumJson, String.valueOf(album.getId()), 1);//专辑对应的Boss系统的addonid
-	        putUtilsService.putPayendToJson(albumJson, String.valueOf(album.getId()), 1);//专辑对应的Boss系统的付费终端
+//	        putUtilsService.putPayendToJson(albumJson, String.valueOf(album.getId()), 1);//专辑对应的Boss系统的付费终端
 	        albumJson.put("videoList", putToJsonArray(album.getId(), site, lang));//专辑包含的视频列表信息列表
 	        leThesaurusThread.putMultiToJson(albumJson, "subLeId", album.getSubLeId(), lang);//乐词ID
 	        albumJson.put("playTv", album.getPlayTv());
@@ -366,7 +366,7 @@ public class AlbumService {
 	        albumJson.put("userId", album.getUserId());
 	        return toMsg(albumJson, album.getId(), isRealtime, path);
     	}catch(Exception e) {
-    		LOGGER.error("album input error：{}", album.toString());
+    		LOGGER.error("album input error：{}", album.toString(), e);
     	}
     	return null;
     }

@@ -19,7 +19,6 @@ import com.letv.mms.transmission.dao.ConAlbumLangInfoDao;
 import com.letv.mms.transmission.dao.ConMmsFileInfoDao;
 import com.letv.mms.transmission.dao.ConVideoFileCodeDao;
 import com.letv.mms.transmission.dao.ConVideoShieldDao;
-import com.letv.mms.transmission.dao.TContentPayStrategyForThirdpartyDao;
 import com.letv.mms.transmission.dao.TContentVipForThirdpartyDao;
 import com.letv.mms.transmission.model.CmsNocopyrightContent;
 import com.letv.mms.transmission.model.KeyValue;
@@ -55,8 +54,8 @@ public class PutUtilsService {
     @Resource
    	private TContentVipForThirdpartyDao tContentVipForThirdpartyDao;
 
-    @Resource
-   	private TContentPayStrategyForThirdpartyDao tContentPayStrategyForThirdpartyDao;
+//    @Resource
+//   	private TContentPayStrategyForThirdpartyDao tContentPayStrategyForThirdpartyDao;
     
     @Resource
    	private ConVideoFileCodeDao conVideoFileCodeDao;
@@ -146,10 +145,10 @@ public class PutUtilsService {
 		json.put("addOnId", vips);//专辑对应的Boss系统的addonid
 	}
 
-	public void putPayendToJson(JSONObject json, String cid, int ctype) {
-		String payDetail = tContentPayStrategyForThirdpartyDao.getPayDetail(cid, ctype);
-		json.put("payDetail", payDetail);
-	}
+//	public void putPayendToJson(JSONObject json, String cid, int ctype) {
+//		String payDetail = tContentPayStrategyForThirdpartyDao.getPayDetail(cid, ctype);
+//		json.put("payDetail", payDetail);
+//	}
 	
 	/**
 	 * 从ext_data字段中取得的值：play_mark，is_vip_download，is_push_child

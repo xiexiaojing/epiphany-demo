@@ -39,11 +39,11 @@ public class AlbumFullServerBootstrap{
 			AlbumDataServiceImpl albumDataServiceImpl = (AlbumDataServiceImpl)Startup.context.getBean("albumDataServiceImpl");
 			FullStartupTask fullAlbumStartupTask = (FullStartupTask)Startup.context.getBean("fullStartupTask");
 			fullAlbumStartupTask.setDataService(albumDataServiceImpl);
-			fullAlbumStartupTask.setFullPath("/letv/mms/search/test/album");
+			fullAlbumStartupTask.setFullPath("/letv/mms/search/transmission/album");
 			fullAlbumStartupTask.setRedisNoKey("fullAlbumNo");
 			fullAlbumStartupTask.setDealOneTime(ALBUM_LIMIT_DEAL_ONE_TIME);
 			fullAlbumStartupTask.setThreadTotal(23);
-			TimerUtil.runEveryday(fullAlbumStartupTask, 14,55,1);
+			TimerUtil.runEveryday(fullAlbumStartupTask, 18,30,1);
 			logger.info("album full task initialization completes!");
 		} catch(Exception e) {
 			logger.error("startup error", e);
