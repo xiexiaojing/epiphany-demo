@@ -790,4 +790,44 @@ public class ConAlbumInfoModel {
 	public void setSiteId(Integer siteId) {
 		this.siteId = siteId;
 	}
+	
+	@Override
+	public String toString() {
+		return "ConAlbumInfoModel [albumType=" + albumType + ", alias=" + alias + ", area=" + area + ", cast=" + cast
+				+ ", category=" + category + ", compere=" + compere + ", copyrightCompany=" + copyrightCompany
+				+ ", copyrightEnd=" + copyrightEnd + ", copyrightStart=" + copyrightStart + ", copyrightType="
+				+ copyrightType + ", createTime=" + createTime + ", description=" + description + ", directory="
+				+ directory + ", doubanId=" + doubanId + ", downloadPlatform=" + downloadPlatform + ", dub=" + dub
+				+ ", duration=" + duration + ", episode=" + episode + ", filmBaseType=" + filmBaseType
+				+ ", firstPlayTime=" + firstPlayTime + ", fitAge=" + fitAge + ", imdb=" + imdb + ", instructor="
+				+ instructor + ", isEnd=" + isEnd + ", isHeight=" + isHeight + ", isPay=" + isPay + ", issueCompany="
+				+ issueCompany + ", language=" + language + ", letvMakeStyle=" + letvMakeStyle + ", letvProduceStyle="
+				+ letvProduceStyle + ", letvReleaseDate=" + letvReleaseDate + ", maker=" + maker + ", makerCompany="
+				+ makerCompany + ", musicAuthors=" + musicAuthors + ", musicCompose=" + musicCompose + ", nameCn="
+				+ nameCn + ", nameEn=" + nameEn + ", namePinyinAbb=" + namePinyinAbb + ", officialUrl=" + officialUrl
+				+ ", originator=" + originator + ", payPlatform=" + payPlatform + ", picCollections=" + picCollections
+				+ ", picOriginal=" + picOriginal + ", playPlatform=" + playPlatform + ", playStatus=" + playStatus
+				+ ", playTv=" + playTv + ", producer=" + producer + ", rCompany=" + rCompany + ", actor=" + actor
+				+ ", releaseDate=" + releaseDate + ", remark=" + remark + ", school=" + school + ", score=" + score
+				+ ", screenWriter=" + screenWriter + ", shortDesc=" + shortDesc + ", sourceId=" + sourceId
+				+ ", starring=" + starring + ", starringDesc=" + starringDesc + ", starringPlay=" + starringPlay
+				+ ", starringPlayPic=" + starringPlayPic + ", status=" + status + ", subCategory=" + subCategory
+				+ ", subTitle=" + subTitle + ", supervise=" + supervise + ", tag=" + tag + ", updateTime=" + updateTime
+				+ ", updateUid=" + updateUid + ", userId=" + userId + ", versionTitle=" + versionTitle
+				+ ", vipWatchingFocus=" + vipWatchingFocus + ", isHomemade=" + isHomemade + ", relationId=" + relationId
+				+ ", varietyShow=" + varietyShow + ", onTime=" + onTime + ", offTime=" + offTime
+				+ ", playControlPlatformCntv=" + playControlPlatformCntv + ", playControlPlatformHuashu="
+				+ playControlPlatformHuashu + ", playControlPlatformGuoguang=" + playControlPlatformGuoguang
+				+ ", appid=" + appid + ", videoFollowTime=" + videoFollowTime + ", contentRating=" + contentRating
+				+ ", canSearch=" + canSearch + ", cloneSource=" + cloneSource + ", isAllRefresh=" + isAllRefresh
+				+ ", interval=" + interval + ", firstPlayTv=" + firstPlayTv + ", repeatPlayTv=" + repeatPlayTv
+				+ ", site=" + site + ", extData=" + extData + ", style=" + style + ", coopPlatform=" + coopPlatform
+				+ ", categoryExt=" + categoryExt + ", leId=" + leId + ", audioInfo=" + audioInfo + ", albumPic="
+				+ albumPic + ", autoCdnSize=" + autoCdnSize + ", subLeId=" + subLeId + ", autoCdnOri=" + autoCdnOri
+				+ ", dynamicGraph=" + dynamicGraph + ", isDanmaku=" + isDanmaku + ", riskLevel=" + riskLevel
+				+ ", playMark=" + playMark + ", disableType=" + disableType + ", controlAreas=" + controlAreas
+				+ ", copyrightCode=" + copyrightCode + ", playGuoguang=" + playGuoguang + ", isVipDownload="
+				+ isVipDownload + ", isRemark=" + isRemark + ", lang=" + lang + ", id=" + id + ", deleted=" + deleted
+				+ ", siteId=" + siteId + "]";
+	}
 }

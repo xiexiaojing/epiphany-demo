@@ -278,92 +278,97 @@ public class AlbumService {
     }
     
     private StringBuffer albumFieldInput(ConAlbumInfoModel album, Integer site, Integer lang, boolean isRealtime, String path) {
-    	SimpleDateFormat sdf = new SimpleDateFormat(Params.DATE_FORMAT);
-    	JSONObject albumJson = new JSONObject();
-        albumJson.put("id", album.getId());//专辑ID
-        albumJson.put("docCreateTime", sdf.format(new Date()));
-        albumJson.put("deleted", album.getDeleted()?1:0);//删除标记
-        if(site==null) {
-        	return toMsg(albumJson, album.getId(), isRealtime, path);
-        }
-        if(album.getAlbumType() != null) {
-        	dictionaryService.putSingleToJson(albumJson, "albumType", album.getAlbumType(), lang);//专辑类型
-        }
-        dictionaryService.putSingleToJson(albumJson, "sourceId", album.getSourceId(), lang);//所属渠道
-        albumJson.put("nameCn", album.getNameCn());//中文名称
-        albumJson.put("nameEn", album.getNameEn());//英文名称
-        albumJson.put("subTitle", album.getSubTitle());//副标题
-        albumJson.put("alias", album.getAlias());//别名
-        albumJson.put("shortDesc", album.getShortDesc());//简要描述
-        albumJson.put("description", album.getDescription()==null?null:album.getDescription().replace("\r\n", ""));//描述
-        albumJson.put("tag", album.getTag());//标签
-        albumJson.put("score", album.getScore());//评分
-        dictionaryService.putSingleToJson(albumJson, "category", album.getCategory(), lang);//电影、电视剧、综艺、动漫
-        dictionaryService.putMultiToJson(albumJson, "subCategory", album.getSubCategory(), lang);//动作 言情
-        dictionaryService.putMultiToJson(albumJson, "downloadPlatform", album.getDownloadPlatform(), lang);//允许下载平台
-        dictionaryService.putMultiToJson(albumJson, "playPlatform", album.getPlayPlatform(), lang);//允许播放平台
-        dictionaryService.putMultiToJson(albumJson, "payPlatform", album.getPayPlatform(), lang);//收费平台
-        albumJson.put("status", album.getStatus());//发布状态： 0,未发布 1已发布2发布失败
-        putUtilsService.putWhiteListToAlbumJson(albumJson, album.getId());//所有可以播放的国家
-        albumJson.put("isEnd", album.getIsEnd());//是否完结
-        albumJson.put("isHeight", album.getIsHeight());//是否高清
-        dictionaryService.putMultiToJson(albumJson, "area", album.getArea(), lang);//地区
-        dictionaryService.putSingleToJson(albumJson, "copyrightType", album.getCopyrightType(), lang);//版权类型
-        albumJson.put("duration", album.getDuration());//时长
-        albumJson.put("releaseDate", album.getReleaseDate());//上映时间
-        albumJson.put("doubanId", album.getDoubanId());//豆瓣ID
-        albumJson.put("episode", album.getEpisode());//总集数
-        albumJson.put("playStatus", album.getPlayStatus());//跟播状态
-        albumJson.put("makerCompany", album.getMakerCompany());//出品公司
-        starCacheThread.putMultiToJson(albumJson, "directory", album.getDirectory(), lang);//导演
-        starCacheThread.putMultiToJson(albumJson, "actor", album.getActor(), lang);//演员
-        starCacheThread.putMultiToJson(albumJson, "starring", album.getStarring(), lang);//主演
-        albumJson.put("starringPlay", album.getStarringPlay());//主演饰演角色
-        albumJson.put("picCollections", album.getPicCollections());//图片集
-        albumJson.put("screenWriter", album.getScreenWriter());//编剧
-        albumJson.put("maker", album.getMaker());//制片人
-        dictionaryService.putSingleToJson(albumJson, "filmBaseType", album.getFilmBaseType(), lang);//电影频道分类  1.电影 2.微电影
-        albumJson.put("rCompany", album.getrCompany());//陈氏传媒
-        dictionaryService.putSingleToJson(albumJson, "language", album.getLanguage(), lang);//内容语言
-        dictionaryService.putMultiToJson(albumJson, "fitAge", album.getFitAge(), lang);//适应年龄
-        starCacheThread.putMultiToJson(albumJson, "cast", album.getCast(), lang);//动漫频道的声优
-        starCacheThread.putMultiToJson(albumJson, "compere", album.getCompere(), lang);//主持人
-        starCacheThread.putMultiToJson(albumJson, "supervise", album.getSupervise(), lang);//动漫监督
-        starCacheThread.putMultiToJson(albumJson, "originator", album.getOriginator(), lang);//原作
-        albumJson.put("isPay", album.getIsPay());//是否付费
-        albumJson.put("relationId", album.getRelationId());//专辑关联ID
-        albumJson.put("isHomemade", album.getIsHomemade());//是否是自制剧
-        albumJson.put("playControlPlatformCntv", album.getPlayControlPlatformCntv());//CNTV播控方
-        albumJson.put("playControlPlatformHuashu", album.getPlayControlPlatformHuashu());//华数播放平台
-        albumJson.put("playControlPlatformGuoguang", album.getPlayControlPlatformGuoguang());//国广播放平台
-        albumJson.put("createTime", album.getCreateTime()==null?StringUtils.EMPTY:sdf.format(album.getCreateTime()));//创建时间
-        albumJson.put("updateTime", album.getUpdateTime()==null?StringUtils.EMPTY:sdf.format(album.getUpdateTime()));//修改时间
-        albumJson.put("varietyShow", album.getVarietyShow());//是否属于综艺频道
-        albumJson.put("appid", album.getAppid());//应用场景
-        albumJson.put("videoFollowTime", album.getVideoFollowTime()==null?StringUtils.EMPTY:sdf.format(album.getVideoFollowTime()));//视频跟播时间
-        dictionaryService.putSingleToJson(albumJson, "contentRating", album.getContentRating(), lang);//内容分级
-        albumJson.put("canSearch", album.getCanSearch());//能否被站内搜索：1站内可搜索，0站内搜索屏蔽，默认为1
-        albumJson.put("cloneSource", album.getCloneSource());//专辑克隆id来源
-        dictionaryService.putSingleToJson(albumJson, "siteId", site, lang);//站点标识
-        dictionaryService.putMultiToJson(albumJson, "style", album.getStyle(), lang);//风格
-        dictionaryService.putMultiToJson(albumJson, "coopPlatform", album.getCoopPlatform(), lang);//合作平台
-        albumJson.put("albumPic", album.getAlbumPic());//动态截图前缀
-        dictionaryService.putSingleToJson(albumJson, "riskLevel", album.getRiskLevel(), lang);//盗播风险(搜索用)
-        putUtilsService.putExtDataToJson(albumJson, new String[]{"play_mark", "is_vip_download", "is_push_child"}, album.getExtData());//"play_mark", "is_vip_download", "is_push_child"字段在 category_ext的Json字符串中
-		putUtilsService.putExtDataByIntToJson(albumJson, new String[]{"pay_type", "is_coupon"}, album.getExtData());
-        dictionaryService.putCategoryExtToJson(albumJson, new String[]{"secondCate", "thirdCate", "childCate", "ageSection", "funcProperty"}, album.getCategoryExt(), lang);//"childCate", "ageSection", "funcProperty"字段在 category_ext的Json字符串中
-        albumJson.put("extData", album.getExtData());
-        albumJson.put("categoryExt", album.getCategoryExt());
-        albumJson.put("lang", lang);//多语言信息
-        putUtilsService.putCmsNocopyrightToJson(albumJson, album.getId());//cms版权信息
-        putUtilsService.putAddonToJson(albumJson, String.valueOf(album.getId()), 1);//专辑对应的Boss系统的addonid
-        putUtilsService.putPayendToJson(albumJson, String.valueOf(album.getId()), 1);//专辑对应的Boss系统的付费终端
-        albumJson.put("videoList", putToJsonArray(album.getId(), site, lang));//专辑包含的视频列表信息列表
-        leThesaurusThread.putMultiToJson(albumJson, "subLeId", album.getSubLeId(), lang);//乐词ID
-        albumJson.put("playTv", album.getPlayTv());
-        tvService.putMultiToJson(albumJson, "playTvMap", album.getPlayTv(), lang);
-        albumJson.put("userId", album.getUserId());
-        return toMsg(albumJson, album.getId(), isRealtime, path);
+    	try {
+	    	SimpleDateFormat sdf = new SimpleDateFormat(Params.DATE_FORMAT);
+	    	JSONObject albumJson = new JSONObject();
+	        albumJson.put("id", album.getId());//专辑ID
+	        albumJson.put("docCreateTime", sdf.format(new Date()));
+	        albumJson.put("deleted", album.getDeleted()?1:0);//删除标记
+	        if(site==null) {
+	        	return toMsg(albumJson, album.getId(), isRealtime, path);
+	        }
+	        if(album.getAlbumType() != null) {
+	        	dictionaryService.putSingleToJson(albumJson, "albumType", album.getAlbumType(), lang);//专辑类型
+	        }
+	        dictionaryService.putSingleToJson(albumJson, "sourceId", album.getSourceId(), lang);//所属渠道
+	        albumJson.put("nameCn", album.getNameCn());//中文名称
+	        albumJson.put("nameEn", album.getNameEn());//英文名称
+	        albumJson.put("subTitle", album.getSubTitle());//副标题
+	        albumJson.put("alias", album.getAlias());//别名
+	        albumJson.put("shortDesc", album.getShortDesc());//简要描述
+	        albumJson.put("description", album.getDescription()==null?null:album.getDescription().replace("\r\n", ""));//描述
+	        albumJson.put("tag", album.getTag());//标签
+	        albumJson.put("score", album.getScore());//评分
+	        dictionaryService.putSingleToJson(albumJson, "category", album.getCategory(), lang);//电影、电视剧、综艺、动漫
+	        dictionaryService.putMultiToJson(albumJson, "subCategory", album.getSubCategory(), lang);//动作 言情
+	        dictionaryService.putMultiToJson(albumJson, "downloadPlatform", album.getDownloadPlatform(), lang);//允许下载平台
+	        dictionaryService.putMultiToJson(albumJson, "playPlatform", album.getPlayPlatform(), lang);//允许播放平台
+	        dictionaryService.putMultiToJson(albumJson, "payPlatform", album.getPayPlatform(), lang);//收费平台
+	        albumJson.put("status", album.getStatus());//发布状态： 0,未发布 1已发布2发布失败
+	        putUtilsService.putWhiteListToAlbumJson(albumJson, album.getId());//所有可以播放的国家
+	        albumJson.put("isEnd", album.getIsEnd());//是否完结
+	        albumJson.put("isHeight", album.getIsHeight());//是否高清
+	        dictionaryService.putMultiToJson(albumJson, "area", album.getArea(), lang);//地区
+	        dictionaryService.putSingleToJson(albumJson, "copyrightType", album.getCopyrightType(), lang);//版权类型
+	        albumJson.put("duration", album.getDuration());//时长
+	        albumJson.put("releaseDate", album.getReleaseDate());//上映时间
+	        albumJson.put("doubanId", album.getDoubanId());//豆瓣ID
+	        albumJson.put("episode", album.getEpisode());//总集数
+	        albumJson.put("playStatus", album.getPlayStatus());//跟播状态
+	        albumJson.put("makerCompany", album.getMakerCompany());//出品公司
+	        starCacheThread.putMultiToJson(albumJson, "directory", album.getDirectory(), lang);//导演
+	        starCacheThread.putMultiToJson(albumJson, "actor", album.getActor(), lang);//演员
+	        starCacheThread.putMultiToJson(albumJson, "starring", album.getStarring(), lang);//主演
+	        albumJson.put("starringPlay", album.getStarringPlay());//主演饰演角色
+	        albumJson.put("picCollections", album.getPicCollections());//图片集
+	        albumJson.put("screenWriter", album.getScreenWriter());//编剧
+	        albumJson.put("maker", album.getMaker());//制片人
+	        dictionaryService.putSingleToJson(albumJson, "filmBaseType", album.getFilmBaseType(), lang);//电影频道分类  1.电影 2.微电影
+	        albumJson.put("rCompany", album.getrCompany());//陈氏传媒
+	        dictionaryService.putSingleToJson(albumJson, "language", album.getLanguage(), lang);//内容语言
+	        dictionaryService.putMultiToJson(albumJson, "fitAge", album.getFitAge(), lang);//适应年龄
+	        starCacheThread.putMultiToJson(albumJson, "cast", album.getCast(), lang);//动漫频道的声优
+	        starCacheThread.putMultiToJson(albumJson, "compere", album.getCompere(), lang);//主持人
+	        starCacheThread.putMultiToJson(albumJson, "supervise", album.getSupervise(), lang);//动漫监督
+	        starCacheThread.putMultiToJson(albumJson, "originator", album.getOriginator(), lang);//原作
+	        albumJson.put("isPay", album.getIsPay());//是否付费
+	        albumJson.put("relationId", album.getRelationId());//专辑关联ID
+	        albumJson.put("isHomemade", album.getIsHomemade());//是否是自制剧
+	        albumJson.put("playControlPlatformCntv", album.getPlayControlPlatformCntv());//CNTV播控方
+	        albumJson.put("playControlPlatformHuashu", album.getPlayControlPlatformHuashu());//华数播放平台
+	        albumJson.put("playControlPlatformGuoguang", album.getPlayControlPlatformGuoguang());//国广播放平台
+	        albumJson.put("createTime", album.getCreateTime()==null?StringUtils.EMPTY:sdf.format(album.getCreateTime()));//创建时间
+	        albumJson.put("updateTime", album.getUpdateTime()==null?StringUtils.EMPTY:sdf.format(album.getUpdateTime()));//修改时间
+	        albumJson.put("varietyShow", album.getVarietyShow());//是否属于综艺频道
+	        albumJson.put("appid", album.getAppid());//应用场景
+	        albumJson.put("videoFollowTime", album.getVideoFollowTime()==null?StringUtils.EMPTY:sdf.format(album.getVideoFollowTime()));//视频跟播时间
+	        dictionaryService.putSingleToJson(albumJson, "contentRating", album.getContentRating(), lang);//内容分级
+	        albumJson.put("canSearch", album.getCanSearch());//能否被站内搜索：1站内可搜索，0站内搜索屏蔽，默认为1
+	        albumJson.put("cloneSource", album.getCloneSource());//专辑克隆id来源
+	        dictionaryService.putSingleToJson(albumJson, "siteId", site, lang);//站点标识
+	        dictionaryService.putMultiToJson(albumJson, "style", album.getStyle(), lang);//风格
+	        dictionaryService.putMultiToJson(albumJson, "coopPlatform", album.getCoopPlatform(), lang);//合作平台
+	        albumJson.put("albumPic", album.getAlbumPic());//动态截图前缀
+	        dictionaryService.putSingleToJson(albumJson, "riskLevel", album.getRiskLevel(), lang);//盗播风险(搜索用)
+	        putUtilsService.putExtDataToJson(albumJson, new String[]{"play_mark", "is_vip_download", "is_push_child"}, album.getExtData());//"play_mark", "is_vip_download", "is_push_child"字段在 category_ext的Json字符串中
+			putUtilsService.putExtDataByIntToJson(albumJson, new String[]{"pay_type", "is_coupon"}, album.getExtData());
+	        dictionaryService.putCategoryExtToJson(albumJson, new String[]{"secondCate", "thirdCate", "childCate", "ageSection", "funcProperty"}, album.getCategoryExt(), lang);//"childCate", "ageSection", "funcProperty"字段在 category_ext的Json字符串中
+	        albumJson.put("extData", album.getExtData());
+	        albumJson.put("categoryExt", album.getCategoryExt());
+	        albumJson.put("lang", lang);//多语言信息
+	        putUtilsService.putCmsNocopyrightToJson(albumJson, album.getId());//cms版权信息
+	        putUtilsService.putAddonToJson(albumJson, String.valueOf(album.getId()), 1);//专辑对应的Boss系统的addonid
+	        putUtilsService.putPayendToJson(albumJson, String.valueOf(album.getId()), 1);//专辑对应的Boss系统的付费终端
+	        albumJson.put("videoList", putToJsonArray(album.getId(), site, lang));//专辑包含的视频列表信息列表
+	        leThesaurusThread.putMultiToJson(albumJson, "subLeId", album.getSubLeId(), lang);//乐词ID
+	        albumJson.put("playTv", album.getPlayTv());
+	        tvService.putMultiToJson(albumJson, "playTvMap", album.getPlayTv(), lang);
+	        albumJson.put("userId", album.getUserId());
+	        return toMsg(albumJson, album.getId(), isRealtime, path);
+    	}catch(Exception e) {
+    		LOGGER.error("album input error：{}", album.toString());
+    	}
+    	return null;
     }
 	
     private JSONArray putToJsonArray(long pid, int site, int lang) {
