@@ -271,13 +271,9 @@
 				<deploy.base>/letv/webapps</deploy.base>
 				<deploy.site>CN</deploy.site>
 				<mms.db.driverClassName>net.sf.log4jdbc.DriverSpy</mms.db.driverClassName>
-				<mms.db.url>jdbc:log4jdbc:mysql://10.127.96.75:3329/mms?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true</mms.db.url>
-                <mms.db.username>mms_test</mms.db.username>
-                <mms.db.password>pVoiGjwrnQtCcybHhspw</mms.db.password>
-                <!-- 
                 <mms.db.url>jdbc:log4jdbc:mysql://10.127.98.47:3306/mms?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true</mms.db.url>
                 <mms.db.username>mms_read</mms.db.username>
-                <mms.db.password>phgPnMo4DOmS8t0Kor3q</mms.db.password> -->
+                <mms.db.password>phgPnMo4DOmS8t0Kor3q</mms.db.password>
 				<!-- deploy.sh 脚本执行-->
                 <deploy.crontab.server>10.127.95.184</deploy.crontab.server>
 				<!-- deploy2.sh 脚本执行 -->
